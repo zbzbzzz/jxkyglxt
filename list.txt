@@ -1,0 +1,40 @@
+jxkyglxt
+├─config                          环境配置文件
+├─src
+│  ├─com
+│  │  └─teacherms
+│  │      ├─alldomain              实体类
+│  │      ├─satffinfomanage        教职工信息管理模块
+│  │      │  ├─action              控制层
+│  │      │  ├─dao                 dao层接口
+│  │      │  │  └─impl             dao层实现类
+│  │      │  ├─service             业务层接口
+│  │      │  │  └─impl             业务层实现类
+│  │      │  └─vo
+│  │      ├─studentinfomanage      学生信息管理模块
+│  │      ├─system                 系统模块
+│  │      └─url
+│  │          └─filter             过滤器
+│  └─util                          工具类
+└─WebRoot
+    ├─css                          css文件
+    ├─fonts                        字体、图标配置
+    ├─img                          图片存放目录
+    ├─js  
+    │  ├─administrator             管理类js
+    │  ├─laydate                   日期js插件
+    │  ├─skins                     js插件
+    │  ├─student                   学生页面引用的js
+    │  └─teacher                   教职工页面引用的js
+    ├─META-INF     
+    ├─modal                        模态框页面
+    │  ├─addInfo                   添加类模态框
+    │  ├─exportInfo                导入类模态框
+    │  └─student                   学生页面使用模态框
+    ├─page 
+    │  ├─administrator             共用页面
+    │  ├─student                   学生类页面
+    │  └─teacher                   教职工类页面
+    └─WEB-INF     
+        └─views                    页面文件
+                
