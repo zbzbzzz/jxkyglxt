@@ -1,31 +1,83 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * TeacherWorks entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "teacher_works")
 public class TeacherWorks implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "WORKS_ID")
 	private String worksId;
+
+	//用户ID
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//著作（专著）名称
+	@Column(name = "WORKS_NAME")
 	private String worksName;
+
+	//著作类别
+	@Column(name = "WORKS_TYPE")
 	private String worksType;
+
+	//出版社
+	@Column(name = "PRESS")
 	private String press;
+
+	//ISBN
+	@Column(name = "ISBN")
 	private String isbn;
+
+	//出版时间
+	@Column(name = "PUBLISH_TIME")
 	private String publishTime;
+
+	//入选情况
+	@Column(name = "SELECTED_SITUATION")
 	private String selectedSituation;
+
+	//入选时间
+	@Column(name = "SELECTED_DATE")
 	private String selectedDate;
+
+	//主编（作者）
+	@Column(name = "EDITOR_USER_NAMES")
 	private String editorUserNames;
+
+	//主编工号（多个以逗号隔开）_排
+	@Column(name = "EDITOR_USER_IDS")
 	private String editorUserIds;
+
+	//副主编
+	@Column(name = "SUB_EDITOR_USER_NAMES")
 	private String subEditorUserNames;
+
+	//副主编工号（多个以逗号隔开）_排名
+	@Column(name = "SUB_EDITOR_USER_IDS")
 	private String subEditorUserIds;
+
+	//参编
+	@Column(name = "ASSOCIATE_EDITOR_USER_NAMES")
 	private String associateEditorUserNames;
+
+	//参编工号（多个以逗号隔开）_排名
+	@Column(name = "ASSOCIATE_EDITOR_USER_IDS")
 	private String associateEditorUserIds;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//创建时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors

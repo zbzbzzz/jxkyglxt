@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,11 +94,22 @@ public class AdminAction extends ActionSupport {
 	public void addTeacherInfo() {
 		try {
 			HttpServletResponse response = ServletActionContext.getResponse();
-			String result = adminService.addTeacherInfo(teacherInfo, getSecondaryCollegeInfo("id"));
+			if(StrUtil.isBlank(teacherInfo.getUserId()))
+			{
+				response.getWriter().write("{\"result\":\"dataError\"}");
+				return;
+			}
+			String msg=adminService.addTeacherInfo(teacherInfo, getSecondaryCollegeInfo("id"));
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().write("{\"result\":\"" + result + "\"}");
-		} catch (IOException e) {
+			response.getWriter().write("{\"result\":\""+msg+"\"}");
+
+		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"IDrepeat\"}");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -105,6 +117,7 @@ public class AdminAction extends ActionSupport {
 	public void modifiedInfomation() {
 		try {
 			HttpServletResponse response = ServletActionContext.getResponse();
+
 			String result = adminService.curingInfomation(getInfoObjectBytableName());
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().write("{\"result\":\"" + result + "\"}");
@@ -273,6 +286,7 @@ public class AdminAction extends ActionSupport {
 			return null;
 		}
 	}
+
 
 	public void setPage(String page) {
 		this.page = page;

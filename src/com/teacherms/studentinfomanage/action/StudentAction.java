@@ -5,6 +5,7 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,17 @@ public class StudentAction extends ActionSupport {
 		try {
 			HttpServletResponse response = ServletActionContext.getResponse();
 			response.setContentType("text/html;charset=utf-8");
+			switch (this.tableName)
+			{
+				case "StudentInfo":
+					if(StrUtil.hasBlank(studentInfo.getStudentId().replace(",",""),studentInfo.getStudentName().replace(",","")))
+					{
+						response.getWriter().write("{\"result\":\"dataError\"}");
+						return;
+					}
+					studentInfo.setDepartmentId(Integer.parseInt(sessionuser.getDepartmentId()));
+					break;
+			}
 			String msg = studentService.setStudentAllInfo(getInfoObjectBytableName());
 			response.getWriter().write("{\"result\":\"" + msg + "\"}");
 		} catch (Exception e) {

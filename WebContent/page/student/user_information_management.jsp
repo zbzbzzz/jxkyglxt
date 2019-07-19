@@ -9,6 +9,12 @@
 <body>
 	<!--管理员查看信息时右侧内容-->
 	<section class="content" id="content">
+		<%@ include file ="/modal/student/add_award_modal.jsp" %>
+		<%@ include file ="/modal/student/add_class_modal.jsp" %>
+		<%@ include file ="/modal/student/add_info_modal.jsp" %>
+		<%@ include file ="/modal/student/add_paper_modal.jsp" %>
+		<%@ include file ="/modal/student/add_patent_modal.jsp" %>
+		<%@ include file ="/modal/student/add_project_modal.jsp" %>
 	<div class="row">
 		<div class="col-md-12">
 			<!--breadcrumbs start -->
@@ -47,12 +53,18 @@
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加学生
 									</button>
-									<button data-toggle="modal" data-target="#student_export_info"
+									<button style="margin-left:6px;" class="btn btn-default viewSubmit btn-sm">
+										<i class="fa fa-search" aria-hidden="true"></i>查看已提交信息
+									</button>
+									<button style="margin-left:6px;" class="btn btn-default viewSolid btn-sm">
+										<i class="fa fa-search" aria-hidden="true"></i>查看已固化信息
+									</button>
+									<button data-toggle="modal" style="margin-left:6px;" data-target="#student_export_info"
 										class="btn btn-default btn-addon btn-sm">
-										<i class="fa fa-share-square"></i>奖励信息导出
+										<i class="fa fa-share-square"></i>学生信息导出
 									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;" class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_user"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
@@ -114,7 +126,6 @@
 											<th>姓名</th>
 											<th>性别</th>
 											<th>入学年份</th>
-											<th>所在学院</th>
 											<th>修改时间</th>
 											<th>操作</th>
 										</tr>
@@ -133,16 +144,16 @@
 								<div style="width: 100%; margin-bottom: 15px;"
 									class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_award_modal"
+									<button style="margin-left:6px;" data-toggle="modal" data-target="#student_award_modal"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加奖励
 									</button>
-									<button data-toggle="modal" data-target="#student_export_award"
+									<button style="margin-left:6px;" data-toggle="modal" data-target="#student_export_award"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-share-square"></i>奖励信息导出
 									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;" class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_award"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
@@ -223,16 +234,16 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_paper_modal"
+									<button style="margin-left:6px;" data-toggle="modal" data-target="#student_paper_modal"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加论文
 									</button>
-									<button data-toggle="modal" data-target="#student_export_paper"
+									<button style="margin-left:6px;" data-toggle="modal" data-target="#student_export_paper"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-share-square"></i>论文信息导出
 									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;" class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_paper"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
@@ -310,17 +321,17 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_patent_modal"
+									<button  style="margin-left:6px;" data-toggle="modal" data-target="#student_patent_modal"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加专利
 									</button>
-									<button data-toggle="modal"
+									<button style="margin-left:6px;" data-toggle="modal"
 										data-target="#student_export_patent"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-share-square"></i>专利信息导出
 									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;" class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_patent"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
@@ -402,18 +413,18 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal"
+									<button style="margin-left:6px;" data-toggle="modal"
 										data-target="#student_project_modal"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加项目
 									</button>
-									<button data-toggle="modal"
+									<button style="margin-left:6px;" data-toggle="modal"
 										data-target="#student_export_project"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-share-square"></i>项目信息导出
 									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;" class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_project"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
@@ -494,10 +505,11 @@
 			<div class="panel-footer">
 				<div id="page">
 					<ul class="pager">
-						<li><a>首页</a></li>
-						<li><a>上一页</a></li>
-						<li><a>下一页</a></li>
-						<li><a>尾页</a></li>
+						<li id="page-first"><a href="javascript:;">首页</a></li>
+						<li id="page-prev"><a href="javascript:;">上一页</a></li>
+						<li><span id="pageInfo">当前第x页 | 共n页</span></li>
+						<li id="page-next"><a href="javascript:;">下一页</a></li>
+						<li id="page-last"><a href="javascript:;">尾页</a></li>
 					</ul>
 				</div>
 			</div>

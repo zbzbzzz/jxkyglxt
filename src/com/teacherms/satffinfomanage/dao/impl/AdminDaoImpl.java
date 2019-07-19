@@ -1,6 +1,11 @@
 package com.teacherms.satffinfomanage.dao.impl;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +35,37 @@ public class AdminDaoImpl implements AdminDao {
 
 	@Override
 	public List<Object> getAllStatusInfo(String table, String time, String status, String collegeName,
-			String multi_condition, String fuzzy) {
+			String multi_condition, String fuzzy,int toindex,int pageSize) {
+		String hql = getHql(table, time, status, collegeName, multi_condition, fuzzy);
+		hql = hql + " order by t.createTime desc";
+		//解决N+1问题（在缓存中取数据）
+		List<Object> list=new ArrayList<Object>();
+		Query query=getSession().createQuery(hql);
+		query.setFirstResult(toindex);
+		query.setMaxResults(pageSize);
+		Iterator<Object> it= query.iterate();
+		while(it.hasNext()){
+			list.add(it.next());
+		}
+		return list;
+	}
+
+	private String getHql(String table, String time, String status, String collegeName, String multi_condition, String fuzzy) {
 		String hql = "select t,u from " + table
 				+ " t,User u,Department d where u.userId=t.userId and u.departmentId=d.departmentId and d.departmentName like '"
 				+ collegeName + "' and t.dataStatus = '" + status + "'" + time + multi_condition + fuzzy;
 		if ("TeacherInfo".equals(table)) {
 			hql += " and u.roleId!='20'";
 		}
-		hql = hql + " order by t.createTime desc";
-		return getSession().createQuery(hql).list();
+		return hql;
+	}
+
+	@Override
+	public int getAllStatusInfoTotalSize(String table, String time, String status, String collegeName, String multi_condition, String fuzzy, int i, int x) {
+		String hql = getHql(table, time, status, collegeName, multi_condition, fuzzy);
+		hql ="select count(*) "+hql.substring(hql.indexOf("from"),hql.length());
+		Query query=getSession().createQuery(hql);
+		return ((Number)query.uniqueResult()).intValue();
 	}
 
 	@Override

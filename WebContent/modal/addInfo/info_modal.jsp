@@ -10,17 +10,19 @@
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">用户信息</h4>
+						<h4 class="modal-title" id="myModalLabel">用户信息  (注意：修改信息后该信息将会回到待审核状态！)</h4>
 					</div>
 					<div class="modal-body">
 						<div id="main_body">
+							<input name="teacherInfo.teacherInfoId" id="tableid" type="hidden" />
 							<table class="tab user-table">
 								<tbody>
 									<tr class="title"></tr>
 									<tr>
 										<td>工号:</td>
 										<td><input name="teacherInfo.userId"
-											class="form-control table_infomation" type="text"></td>
+											class="form-control table_infomation" type="text" >
+											</td>
 									</tr>
 								</tbody>
 								<tbody class="basic">
@@ -28,7 +30,7 @@
 										<!-- name="teacherInfo." -->
 										<td>姓名:</td>
 										<td><input name="userName"
-											class="form-control table_infomation" type="text"></td>
+											class="form-control table_infomation" type="text" ></td>
 									</tr>
 									<tr>
 										<td>证件类型:</td>
@@ -329,6 +331,8 @@
 							</table>
 						</div>
 					</div>
+					<input name="teacherInfo.userId"
+						   class="form-control table_infomation" type="hidden">
 					<div class="modal-footer">
 						<button style="display: none;" type="button"
 							class="btn btn-danger sure_add">添加</button>
@@ -336,7 +340,6 @@
 							class="btn btn-danger sure_mod">修改</button>
 						<button type="button" class="btn btn-default close-btn"
 							data-dismiss="modal">关闭</button>
-						<input name="teacherInfo.teacherInfoId" id="tableid" type="hidden" />
 					</div>
 				</div>
 			</form>

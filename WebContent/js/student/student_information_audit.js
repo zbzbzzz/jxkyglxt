@@ -7,6 +7,81 @@ $(function() {
 	var modal_id = null;
 	//方法声明------------------------------start
 	//方法加载，让方法开始加载，以便调用
+
+
+	//查看信息
+	var viewInfo = function() {
+		//获取id
+		var id = $(this).siblings('input').val();
+		//查询单条信息
+		$("#" + modal_id).find('.sure_add').hide();
+		$("#" + modal_id).find('.sure_modi').hide();
+		$.post("/jxkyglxt/Student/student_getStudentOneInfo",
+			{
+				tableId : id,
+				tableName : data.tableName
+			}, function(xhr) {
+				//data.tableName中获取当前的表名称，进行判断对具体哪一个模态框进行操作
+				$("#" + modal_id + " .modal-body").find("input,select").each(function() {
+					var na = $(this).attr("name").split(".")[1];
+					$(this).val(xhr.object[na]);
+
+					$(this).attr("disabled","disabled");
+				})
+				//显示出模态框
+				$("#" + modal_id).modal({
+					keyboard : true
+				})
+			}, "json");
+	}
+
+	//显示未提交信息
+	var showDisSubmit = function(){
+		data.dataState="10";
+		var dataLast = info_data.getQueryInfo();
+		dataLast.page = 1;
+		$.ajax({
+			url : "/jxkyglxt/Student/student_getSpecifiedInformationByPaging",
+			type : "post",
+			async : false,
+			timeout : 3000,
+			data : dataLast,
+			dataType : "json",
+			success : function(xhr_data) {
+				//记录分页信息
+				setPageInfo(xhr_data);
+
+				$('#' + a_href).find('table tbody').html(()=>{
+					var str = '';
+					for (i = 0; i < xhr_data.ObjDatas.length; i++) {
+						str += `<tr>
+			<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
+			<td>${xhr_data.ObjDatas[i].object.studentId}</td>
+			<td>${xhr_data.ObjDatas[i].object.studentName}</td>
+			<td>${xhr_data.ObjDatas[i].object.sex}</td>
+			<td>${xhr_data.ObjDatas[i].object.enrolmentYear}</td>
+			<td>${xhr_data.ObjDatas[i].object.createTime}</td>
+<td><input type="hidden" value="${xhr_data.ObjDatas[i].object.studentId}"><button class="btn btn-default btn-xs viewButton" title="查看">
+<i class="fa fa-eye fa-lg"  aria-hidden="true"></i></button></td>`;
+					}
+					return str;
+				});
+				$('.viewButton').click(viewInfo);
+				//记录分页详情信息
+				$('#pageInfo').html('当前第' + xhr_data.pageIndex + '页 | 共' + xhr_data.totalPages + '页');
+				((xhr_data)=>{
+					if(xhr_data.HaveNextPage){$('#page-next').removeClass('disabled')}else{ $('#page-next').addClass('disabled')}
+					if(xhr_data.HavePrePage){$('#page-prev').removeClass('disabled')}else{ $('#page-prev').addClass('disabled')}
+					if(xhr_data.pageIndex == 1){$('#page-first').addClass('disabled')}else{$('#page-first').removeClass('disabled')}
+					if(xhr_data.pageIndex == xhr_data.totalPages || xhr_data.totalPages == 0){$('#page-last').addClass('disabled')}else{$('#page-last').removeClass('disabled')}
+				})(xhr_data);
+			},
+			error : function() {
+				toastr.error('服务器错误!');
+			}
+		});
+	}
+
 	//修改信息
 	var modiInfo = function() {
 		//获取id、
@@ -33,6 +108,10 @@ $(function() {
 					$(this).val(xhr.user.userName);
 				}
 				else*/
+					if($(this).attr("name")!="studentInfo.studentId"&&$(this).attr("name")!="studentInfo.studentName")
+						$(this).removeAttr("disabled");
+				else
+						$(this).attr("disabled","disabled");
 				})
 				/*$.each(xhr.attachmentName, function(i, v) {
 					$("#" + modal_id + " .addInfo").before(ImgManiFunc.setImgDiv(v, xhr.user.userId));
@@ -83,6 +162,7 @@ $(function() {
 	//页面中只需要绑定一次事件的元素绑定事件区----start
 	$('.nav-tabs li a').click(function() {
 		//如果已经是点击状态，则点击不作为
+		data.dataState="20";
 		if ($(this).parent('li').attr('class') == 'active') return;
 		//重置页码
 		data.page = 1;
@@ -160,6 +240,8 @@ $(function() {
 			});
 		}
 	});
+    //查看未提交信息
+	$('.viewDisSubmit').click(showDisSubmit);
 	//模糊查询
 	$('.fuzzy_query').click(function() {
 		data.fuzzy_query = $(this).parent().prev().val();
@@ -225,6 +307,7 @@ $(function() {
 
 				$('#' + a_href).find('table tbody').html(getStr(xhr_data));
 				//每次做查询之后，按钮需要重新绑定事件
+				$('.viewButton').click(viewInfo);
 				$('.solidButton').click(solidInfo);
 				$('.modiButton').click(modiInfo);
 
@@ -244,11 +327,22 @@ $(function() {
 		});
 	}
 
+
+
 	//通过a标签的href属性，获取查询到的组合成的字符串结果
 	function getStr(xhr) {
 		var str = "";
 		switch (a_href) {
 		case 'info':
+			var action="";
+            switch (data.dataState) {
+				case "10":
+					action='<input type="hidden" value="${xhr.ObjDatas[i].object.studentId}"><button class="btn btn-default btn-xs viewButton" title="查看"><i class="fa fa-eye fa-lg"  aria-hidden="true"></i></button>';
+					break;
+				case "20":
+					action='<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button><button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>';
+					break;
+			}
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				str += `<tr>
 				<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
@@ -257,9 +351,7 @@ $(function() {
 				<td>${xhr.ObjDatas[i].object.sex}</td>
 				<td>${xhr.ObjDatas[i].object.enrolmentYear}</td>
 				<td>${xhr.ObjDatas[i].object.createTime}</td>
-				<td><input type="hidden" value="${xhr.ObjDatas[i].object.studentId}">
-				<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>
-				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>`;
+				<td><input type="hidden" value="${xhr.ObjDatas[i].object.studentId}">${action}</td>`;
 			}
 			break;
 		case 'award':
@@ -274,7 +366,7 @@ $(function() {
 				<td>${xhr.ObjDatas[i].object.firstAward}</td>
 				<td><input type="hidden" value="${xhr.ObjDatas[i].object.awardId}">
 				<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>
-				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>`;
+				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button></td>`;
 			}
 			break;
 		case 'patent':
@@ -289,7 +381,7 @@ $(function() {
 				<td>${xhr.ObjDatas[i].object.time}</td>
 				<td><input type="hidden" value="${xhr.ObjDatas[i].object.patentId}">
 				<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>
-				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>`;
+				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button></td>`;
 			//				<td>${xhr.ObjDatas[i].object.firstPatent}</td>
 			}
 			break;
@@ -305,7 +397,7 @@ $(function() {
 				<td>${xhr.ObjDatas[i].object.createTime}</td>
 				<td><input type="hidden" value="${xhr.ObjDatas[i].object.paperId}">
 				<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>
-				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>`;
+				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button></td>`;
 			}
 			break;
 		case 'project':
@@ -318,7 +410,7 @@ $(function() {
 				<td>${xhr.ObjDatas[i].object.userId}</td>
 				<td><input type="hidden" value="${xhr.ObjDatas[i].object.projectId}">
 				<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>
-				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>`;
+				<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button></td>`;
 			}
 			break;
 		default:

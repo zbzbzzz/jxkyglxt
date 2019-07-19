@@ -1,15 +1,26 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * Role entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "role")
 public class Role implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ROLE_ID")
 	private String roleId;
+
+	//角色名称
+	@Column(name = "ROLE_NAME")
 	private String roleName;
+
+	//角色描述
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 	// Constructors

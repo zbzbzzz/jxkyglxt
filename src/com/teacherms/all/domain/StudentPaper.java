@@ -1,22 +1,53 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * StudentPaper entity. @author MyEclipse Persistence Tools
  */
 
+@Entity
+@Table(name = "student_paper")
 public class StudentPaper implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PAPER_ID")
 	private String paperId;
+
+	//论文名称
+	@Column(name = "PAPER_NAME")
 	private String paperName;
+
+	//学号
+	@Column(name = "STUDENT_ID")
 	private String studentId;
+
+	//学生名字
+	@Column(name = "STUDENT_NAME")
 	private String studentName;
+
+	//发表期刊
+	@Column(name = "PERIODICAL")
 	private String periodical;
+
+	//发表时间
+	@Column(name = "PUBLISH_TIME")
 	private String publishTime;
+
+	//收录情况
+	@Column(name = "INCLUDED_SITUATION")
 	private String includedSituation;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//修改时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
+
 
 	// Constructors
 

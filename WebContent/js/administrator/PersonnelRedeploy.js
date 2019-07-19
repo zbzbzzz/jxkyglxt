@@ -7,15 +7,16 @@ $(function() {
 	$('.personnelRedeploy').on('click', function(e) {
 		var tag = e.target;
 		if (tag.tagName == "A") {
-			var userId = $(tag).attr('user-id');
+			var uuid = $(tag).attr('uu-id');
 			$.post('/jxkyglxt/System/system_getOneOfUser', {
-				"user.userId" : userId
+				"user.uuid" : uuid
 			}, function(xhr) {
 				$.post('/jxkyglxt/System/system_getAllDepartment', '', function(xhr2) {
 					var TABLE_STYLE = '<form id="user_update"><table class="table">'
 						+ '<caption>信息</caption><tbody>'
+						+ '<input type="hidden"class="form-control" name="user.uuid" value="' + xhr.uuid + '"/>'
 						+ '<tr>'
-						+ '<th>ID</th>'
+						+ '<th>工号</th>'
 						+ '<th>'
 						+ '<input name="user.userId" class="form-control" value="' + xhr.userId + '" type="text"></th>'
 						+ '</tr>'
@@ -57,18 +58,12 @@ $(function() {
 					action : function() {
 						var name = this.$content.find('input[name="user.userName"]').val();
 						$.post('/jxkyglxt/System/system_modifyUser', $('#user_update').serialize(), function(xhr_data) {
-							if (xhr_data.length > 0) {
-								toastr.success("修改成功");
-								//重新刷新该页面
+							ajaxResultVerification(xhr_data.result);
 								$('.right-side').load('page/administrator/PersonnelRedeploy.jsp #content', function() {
 									$.getScript("js/administrator/PersonnelRedeploy.js", function() {
-										$('a[href="#' + $(tag).parent().parent().attr("id") + '"]').click();
-									});
-
+										$('a[href="#' + $(tag).parent().parent().attr("id") + '"]').click();});
 								});
-							} else {
-								toastr.error("修改失败,ID已使用");
-							}
+
 						}, 'json');
 					}
 				},

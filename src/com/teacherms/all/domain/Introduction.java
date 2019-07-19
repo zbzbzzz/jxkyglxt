@@ -1,18 +1,38 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * Introduction entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "introduction")
 public class Introduction implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "Introduction_id")
 	private Integer introductionId;
+
+	//名字
+	@Column(name = "Introduction_name")
 	private String introductionName;
+
+	//内容
+	@Column(name = "Introduction_content")
 	private String introductionContent;
+
+	//部门
+	@Column(name = "Introduction_department")
 	private String introductionDepartment;
+
+	//头像
+	@Column(name = "Introduction_image")
 	private String introductionImage;
+
+	//排名
+	@Column(name = "Introduction_ranking")
 	private Integer introductionRanking;
 
 	// Constructors

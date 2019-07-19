@@ -1,56 +1,191 @@
 package com.teacherms.all.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
 /**
  * TeacherInfo entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "teacher_info")
 public class TeacherInfo implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GenericGenerator(name="idGenerator", strategy="uuid")
+	@GeneratedValue(generator="idGenerator")
+	@Column(name = "TEACHER_INFO_ID")
 	private String teacherInfoId;
+
+	//用户ID
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//证件类型
+	@Column(name = "CERTIFICATE_TYPE")
 	private String certificateType;
+
+	//证件号码
+	@Column(name = "CERTIFICATE_NO")
 	private String certificateNo;
+
+	//民族
+	@Column(name = "NATION")
 	private String nation;
+
+	//国籍
+	@Column(name = "NATIONALITY")
 	private String nationality;
+
+	//港澳台
+	@Column(name = "G_A_T")
 	private String GAT;
+
+	//华侨
+	@Column(name = "HUA_QIAO")
 	private String huaQiao;
+
+	//政治面貌
+	@Column(name = "POLITICAL_STATUS")
 	private String politicalStatus;
+
+	//性别
+	@Column(name = "SEX")
 	private String sex;
+
+	//出生年月
+	@Column(name = "BIRTHDAY")
 	private String birthday;
+
+	//最高学历
+	@Column(name = "HIGHEST_EDUCATION")
 	private String highestEducation;
+
+	//最高学位
+	@Column(name = "HIGHEST_DEGREE")
 	private String highestDegree;
+
+	//学缘
+	@Column(name = "LEARN_EDGE_STRUCTURE")
 	private String learnEdgeStructure;
+
+	//专业技术职称
+	@Column(name = "PROFESSIONAL_TITLE")
 	private String professionalTitle;
+
+	//职称级别
+	@Column(name = "PROFESSIONAL_GRADE")
 	private String professionalGrade;
+
+	//学科类别
+	@Column(name = "SUBJECT_CATEGORY")
 	private String subjectCategory;
+
+	//参加工作时间
+	@Column(name = "WORK_DATE")
 	private String workDate;
+
+	//入校时间
+	@Column(name = "INDUCTION_DATE")
 	private String inductionDate;
+
+	//教师资格证号
+	@Column(name = "TEACHER_CERTIFICATE_NO")
 	private String teacherCertificateNo;
+
+	//授课类型
+	@Column(name = "TEACHING_TYPE")
 	private String teachingType;
+
+	//授课状态
+	@Column(name = "TEACHING_STATUS")
 	private String teachingStatus;
+
+	//任教专业名称
+	@Column(name = "TEACHING_PROFESSION_NAME")
 	private String teachingProfessionName;
+
+	//任教专业代码
+	@Column(name = "TEACHING_PROFESSION_NO")
 	private String teachingProfessionNo;
+
+	//专业任教时间
+	@Column(name = "PROFESSION_TEACHING_DATE")
 	private String professionTeachingDate;
+
+	//是否实验技术人员
+	@Column(name = "EXPERIMENTAL_TECHNICAL_PERSONNEL")
 	private String experimentalTechnicalPersonnel;
+
+	//是否双师型
+	@Column(name = "DOUBLE_TEACHER_TYPE")
 	private String doubleTeacherType;
+
+	//是否工程背景
+	@Column(name = "ENGINEERING_BACKGROUND")
 	private String engineeringBackground;
+
+	//是否行业背景
+	@Column(name = "INDUSTRY_BACKGROUND")
 	private String industryBackground;
+
+	//行政职务级别
+	@Column(name = "ADMINISTRATIVE_RANK")
 	private String administrativeRank;
+
+	//研究生导师类型
+	@Column(name = "GRADUATE_TUTOR_TYPE")
 	private String graduateTutorType;
+
+	//校内指导博士生人数
+	@Column(name = "NUMBER_OF_DOCTOR")
 	private Integer numberOfDoctor;
+
+	//内指导硕士生人数
+	@Column(name = "NUMBER_OF_MASTER")
 	private Integer numberOfMaster;
+
+	//职工类型
+	@Column(name = "EMPLOYEE_TYPE")
 	private String employeeType;
+
+	//录用类型
+	@Column(name = "EMPLOYMENT_TYPE")
 	private String employmentType;
+
+	//任职状态
+	@Column(name = "JOB_STATUE")
 	private String jobStatue;
+
+	//异动类型
+	@Column(name = "TRANSACTION_TYPE")
 	private String transactionType;
+
+	//高校调入
+	@Column(name = "UNIVERSITY_TRANSFER")
 	private String universityTransfer;
+
+	//本校毕业
+	@Column(name = "SCHOOL_GRADUATION")
 	private String schoolGraduation;
+
+	//本校调整
+	@Column(name = "SCHOOL_ADJUSTMENT")
 	private String schoolAdjustment;
+
+	//校外教师类型
+	@Column(name = "OFF_CAMPUS_TEACHER_TYPE")
 	private String offCampusTeacherType;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//创建时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
+
 
 	// Constructors
 

@@ -27,8 +27,8 @@ public class SystemDaoImpl implements SystemDao {
 	}
 
 	@Override
-	public User getUserByUser_id(String user_id) {
-		String hql = "from User where userId = '" + user_id + "'";
+	public User getUserByUuid(String uuid) {
+		String hql = "from User where uuid = '" + uuid + "'";
 		return (User) getSession().createQuery(hql).uniqueResult();
 	}
 
@@ -52,7 +52,6 @@ public class SystemDaoImpl implements SystemDao {
 	public User updateUser(User user) {
 		try {
 			getSession().merge(user);
-			getSession().update(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,6 +99,12 @@ public class SystemDaoImpl implements SystemDao {
 	public List<User> getAllUser(){
 		String hql = "from User";
 		return getSession().createQuery(hql).list();
+	}
+
+	@Override
+	public User getUserByUserId(String user_id) {
+		String hql = "from User where userId = '" + user_id + "'";
+		return (User) getSession().createQuery(hql).uniqueResult();
 	}
 
 	@Override

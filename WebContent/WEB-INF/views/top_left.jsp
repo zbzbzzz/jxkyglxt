@@ -15,7 +15,7 @@
 	if (hour <= 5) {
 		greeting = "夜深了，";
 	} else if (hour <= 9) {
-		greeting = "早安了，";
+		greeting = "早上好，";
 	} else if (hour <= 11) {
 		greeting = "上午好，";
 	} else if (hour <= 13) {
@@ -83,7 +83,7 @@
 	<s:action namespace="/System" name="system_getIntroduction"
 		executeResult="false"></s:action>
 	<!-- header logo: style can be found in header.less -->
-	<header class="header"> <a class="logo"> 师生信息管理系统 </a> <!-- Header Navbar: style can be found in header.less -->
+	<header class="header"> <a class="logo" href="page/main_index.jsp"> 师生信息管理系统 </a> <!-- Header Navbar: style can be found in header.less -->
 	<nav class="navbar navbar-static-top" role="navigation"> <!-- Sidebar toggle button-->
 	<a class="navbar-btn sidebar-toggle" data-toggle="offcanvas"
 		role="button"> <span class="sr-only">Toggle navigation</span> <span
@@ -148,7 +148,7 @@
 					</a>
 					</li>
 					<li class="divider"></li>
-					<li><a href="javascript:exit_alert()"> <i
+					<li><a onclick="exit_alert()"> <i
 							class="fa fa-ban fa-fw pull-right"></i> 退出系统
 					</a></li>
 				</ul></li>
@@ -285,8 +285,8 @@
 					<ul class="nav">
 						<!-- <li><a class="">账户设置</a></li> -->
 						<li><a onclick="user_setting(user_setting)"
-							class=" setButton">重置密码</a></li>
-						<li><a href="javascript:exit_alert()"><i
+							class=" setButton">修改信息</a></li>
+						<li><a onclick="exit_alert()"><i
 								class="fa fa-ban fa-fw pull-right"></i> 退出系统</a></li>
 					</ul>
 				</div></li>
@@ -427,9 +427,8 @@
 		function exit_alert() {
 			$.confirm({
 				title : '退出登录',
-				content : '即将退出系统,确定继续退出吗?',
-				smoothContent : false,
-				autoClose : 'cancelAction|10000',
+				content : '即将退出系统,确定继续退出吗?(5s后自动取消)',
+				autoClose : 'cancelAction|5000',
 				buttons : {
 					deleteUser : {
 						btnClass : 'btn-danger',

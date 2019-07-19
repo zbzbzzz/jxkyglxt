@@ -26,8 +26,10 @@ public interface StudentDao {
 	public Department getDepartmentById(String departmentId);
 
 	public List<Object> getAllStatusInfo(String tableName, String time_interval, String dataState, String collegeName,
-			String string, String string2);
+			String string, String string2,int i,int x);
 
 	public boolean updateInfo(Object infoObject, String string);
+	public int getAllStatusInfoTotalSize(String tableName, String time_interval, String dataState, String collegeName,
+										 String string, String string2,int i,int x);
 
 }

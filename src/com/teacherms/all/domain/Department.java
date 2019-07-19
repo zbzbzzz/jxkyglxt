@@ -1,15 +1,27 @@
 package com.teacherms.all.domain;
 
+
+import javax.persistence.*;
+
 /**
  * Department entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "department")
 public class Department implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "DEPARTMENT_ID")
 	private String departmentId;
+
+	//院系（部门）名称
+	@Column(name = "DEPARTMENT_NAME")
 	private String departmentName;
+
+	//院系（部门）描述
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 	// Constructors

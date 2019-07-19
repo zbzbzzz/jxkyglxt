@@ -181,6 +181,10 @@
 							</table>
 						</div>
 					</div>
+					<input name="studentInfo.studentId"
+						   class="form-control table_infomation" type="hidden">
+					<input name="studentInfo.studentName"
+						   class="form-control table_infomation" type="hidden">
 					<div class="modal-footer">
 						<button style="" type="button" class="btn btn-danger sure_add">添加</button>
 						<button style="display: none;" type="button"

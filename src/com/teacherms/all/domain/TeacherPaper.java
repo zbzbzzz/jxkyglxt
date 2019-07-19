@@ -1,31 +1,90 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * TeacherPaper entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "teacher_paper")
 public class TeacherPaper implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PAPER_ID")
 	private String paperId;
+
+	//用户ID
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//论文名称
+	@Column(name = "PAPER_NAME")
 	private String paperName;
+
+	//作者
+	@Column(name = "AUTHOR_USER_NAMES")
 	private String authorUserNames;
+
+	//作者工号_排名
+	@Column(name = "AUTHOR_USER_IDS")
 	private String authorUserIds;
+
+	//论文类别
+	@Column(name = "PAPER_TYPE")
 	private String paperType;
+
+	//发表期刊
+	@Column(name = "PERIODICAL")
 	private String periodical;
+
+	//期号
+	@Column(name = "PERIODICAL_NO")
 	private String periodicalNo;
+
+	//发表日期
+	@Column(name = "PUBLISH_TIME")
 	private String publishTime;
+
+	//收录情况
+	@Column(name = "INCLUDED_SITUATION")
 	private String includedSituation;
+
+	//他引次数
+	@Column(name = "TOTAL_CITATIONS")
 	private Integer totalCitations;
+
+	//是否与行业联合发表
+	@Column(name = "SFYHYLHFB")
 	private String sfyhylhfb;
+
+	//是否与地方联合发表
+	@Column(name = "SFYDFLHFB")
 	private String sfydflhfb;
+
+	//是否与国际联合发表
+	@Column(name = "SFYGJLHFB")
 	private String sfygjlhfb;
+
+	//是否是跨学科论文
+	@Column(name = "SFSKXKLW")
 	private String sfskxklw;
+
+	//成果字数（千字）
+	@Column(name = "WORDS_NUM")
 	private String wordsNum;
+
+	//附件地址
+	@Column(name = "ATTACHMENT_PATH")
 	private String attachmentPath;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//创建时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors

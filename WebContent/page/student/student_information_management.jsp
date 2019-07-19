@@ -9,7 +9,13 @@
 <body>
 	<!--管理员查看信息时右侧内容-->
 	<section class="content" id="content">
-	<div class="row">
+		<%@ include file ="/modal/student/add_award_modal.jsp" %>
+		<%@ include file ="/modal/student/add_class_modal.jsp" %>
+		<%@ include file ="/modal/student/add_info_modal.jsp" %>
+		<%@ include file ="/modal/student/add_paper_modal.jsp" %>
+		<%@ include file ="/modal/student/add_patent_modal.jsp" %>
+		<%@ include file ="/modal/student/add_project_modal.jsp" %>
+		<div class="row">
 		<div class="col-md-12">
 			<!--breadcrumbs start -->
 			<ul class="breadcrumb">
@@ -43,7 +49,7 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_info_modal"
+									<button style="margin-left:6px;"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加学生
 									</button>
@@ -137,7 +143,7 @@
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加奖励
 									</button>
-									<button style="margin-left:6px;" data-toggle="modal" data-target="#student_export_award"
+									<button style="margin-left:6px;"
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-share-square"></i>奖励信息导出
 									</button>
@@ -224,7 +230,7 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_paper_modal"
+									<button
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加论文
 									</button>
@@ -311,7 +317,7 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal" data-target="#student_patent_modal"
+									<button
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加专利
 									</button>
@@ -404,8 +410,7 @@
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
 									<!--筛选&查询&添加按钮位置-->
-									<button data-toggle="modal"
-										data-target="#student_project_modal"
+									<button
 										class="btn btn-default btn-addon btn-sm">
 										<i class="fa fa-plus"></i>添加项目
 									</button>

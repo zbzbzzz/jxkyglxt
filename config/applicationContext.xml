@@ -7,6 +7,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
+	<!-- 全局扫描-->
+	<context:annotation-config />
+	<context:component-scan base-package="com.teacherms.*">
+	</context:component-scan>
+
 	<!-- 导入资源文件 -->
 	<context:property-placeholder location="classpath:db.properties" />
 	<!-- 配置C3P0数据源 -->
@@ -20,17 +25,35 @@
 		<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
 	</bean>
 	<!-- 配置SessionFactory -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
-		<property name="mappingLocations" value="classpath:com/teacherms/*/domain/*.hbm.xml"></property>
+
+	<bean name="sessionFactory"
+	class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.teacherms.all.domain</value>
+			</list>
+		</property>
+
+
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+				hibernate.show_sql=true
+				hibernate.format_sql=true
+				hbm2ddl.auto=update
+				hibernate.current_session_context_class=org.springframework.orm.hibernate4.SpringSessionContext
+				<!-- 开启二级缓存 -->
+				hibernate.cache.use_second_level_cache=true
+				hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
+			</value>
+		</property>
 	</bean>
 
 	<!-- 配置spring的声明式事务 -->
 	<!-- 配置hibernate的事务管理器 -->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	<!-- 配置事务属性 -->
@@ -45,11 +68,8 @@
 	<!-- 配置事务切入点，再把事务属性和事务切入点关联起来 -->
 	<aop:config>
 		<aop:pointcut expression="execution(* com.teacherms.*.service.*.*(..))"
-			id="txPointcut" />
+		id="txPointcut" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
 	</aop:config>
-	
-	<!-- 全局扫描-->
-	<context:component-scan base-package="com.teacherms.*">
-    </context:component-scan>
+
 </beans>

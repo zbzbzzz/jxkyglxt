@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class TeacherAction extends ActionSupport {
 	private String fuzzy_query;// 模糊查询字段
 
 	// 用户名字
-	private String username;
+	private String userName;
 
 	// 信息表
 	private TeacherAward teacherAward;
@@ -79,7 +80,7 @@ public class TeacherAction extends ActionSupport {
 			response.setContentType("text/html;charset=utf-8");
 			// 给Object对象赋值
 			getObjectByTableName(tableName);
-			PageVO<Object> listAdmin = teacherService.getTableInfoInPaging(sessionuser.getUserId(), tableName,
+			PageVO<Object> listAdmin = teacherService.getTableInfoInPaging(sessionuser.getUuid(), tableName,
 					page == null ? "1" : page, time_interval, obj, fuzzy_query);
 			response.getWriter().write(new Gson().toJson(listAdmin));
 		} catch (IOException e) {
@@ -162,11 +163,21 @@ public class TeacherAction extends ActionSupport {
 			} else {
 				return;
 			}
+			if(StrUtil.isBlank(teacherInfo.getUserId()))
+			{
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"dataError\"}");
+				return;
+			}
 			String result = teacherService.addTableInfo(sessionuser.getUserId(), obj, tableName);
 			ServletActionContext.getResponse().setCharacterEncoding("utf-8");
 			ServletActionContext.getResponse().getWriter().write(result);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"IDrepeat\"}");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -187,7 +198,7 @@ public class TeacherAction extends ActionSupport {
 		try {
 			HttpServletResponse response = ServletActionContext.getResponse();
 			response.setContentType("text/html;charset=utf-8");
-			String result = teacherService.completeBasicInformation(teacherInfo, sessionuser.getUserId(), username);
+			String result = teacherService.completeBasicInformation(teacherInfo, sessionuser.getUserId(), userName);
 			response.getWriter().write("{\"result\":\"" + result + "\"}");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -379,12 +390,12 @@ public class TeacherAction extends ActionSupport {
 		return teacherWorks;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String username) {
+		this.userName = userName;
 	}
 
 	public void setFuzzy_query(String fuzzy_query) {

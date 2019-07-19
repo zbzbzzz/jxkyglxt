@@ -43,6 +43,10 @@ $(function() {
 						$(this).val(xhr.user.userName);
 					}
 					else $(this).val(xhr.object[na]);
+					if($(this).attr("name")!="teacherInfo.userId"&&$(this).attr("name")!="userName")
+						$(this).removeAttr("disabled");
+					else
+						$(this).attr("disabled","disabled");
 				})
 				//等全部信息加载完毕，再将模态框显示出来，避免模态框出现但是对应的值还未加载情况
 				//如果为用户信息，则只显示基础部分（当前为用户管理页面）
@@ -57,11 +61,9 @@ $(function() {
 				$('#info_modal').find('.sure_mod').unbind().click(function() {
 					var review_data = $("#info_modal form").serialize() + "&tableName=" + data.tableName;
 					$.post("/jxkyglxt/Teacher/teacher_userSetTableInfo", review_data, function(sxh_data) {
-						if (sxh_data.result == "success") {
-							toastr.success("修改成功!");
 							$('#info_modal').modal('hide');
 							doQuery();
-						}
+						    ajaxResultVerification(sxh_data.result);
 					}, "json")
 				}).show();
 			}, "json");
@@ -90,6 +92,7 @@ $(function() {
 						$(this).val(xhr.user.userName);
 					}
 					else $(this).val(xhr.object[na]);
+					$(this).attr("disabled","disabled");
 				})
 				$.each(xhr.attachmentName, function(i, v) {
 					$("#" + modal_id + " .addInfo").before(ImgManiFunc.setImgDiv(v, xhr.user.userId));
@@ -185,10 +188,7 @@ $(function() {
 		var str = '<form id="user_setting" action="">' +
 			'<table style="width:100%;">' +
 			'<tbody>' +
-			'<tr>' +
-			'<td>工号</td>' +
-			'<td><input type="text"class="form-control" name="user.userId"/></td>' +
-			'</tr>' +
+			'<input type="hidden"class="form-control" name="user.userId"/>' +
 			'<tr>' +
 			'<td>名字</td>' +
 			'<td><input type="text"class="form-control"name="user.userName"/></td>' +
@@ -374,15 +374,12 @@ $(function() {
 		doQuery();
 	});
 	//用户信息添加(用户添加模态框是唯一的)
+	$('.sure_add_info').unbind();
 	$('.sure_add_info').click(function() {
 		var review_data = $("#add_info_modal form").serialize() + "&tableName=" + data.tableName;
-		$.post("/jxkyglxt/Admin/admin_addTeacherInfo", review_data, function(sxh_data) {
-			if (sxh_data.result == "success") {
-				toastr.success('添加成功!')
-			} else {
-				toastr.error('添加失败!');
-			}
-		}, "json")
+		$.post("/jxkyglxt/Admin/admin_addTeacherInfo", review_data, function(sxh_data,status,xhr) {
+			ajaxResultVerification(sxh_data.result);}
+			, "json")
 	});
 	//一次事件的元素绑定事件区----end
 

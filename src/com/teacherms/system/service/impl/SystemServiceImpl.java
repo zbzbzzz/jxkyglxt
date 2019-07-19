@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,8 @@ public class SystemServiceImpl implements SystemService {
 	private SystemDao systemDao;
 
 	@Override
-	public Object login(String user_id, String password) {
-		User user = systemDao.getUserByUser_id(user_id);
+	public Object login(String user_Id, String password) {
+		User user = systemDao.getUserByUserId(user_Id);
 		if (user == null) {
 			return "无此用户。请检查帐号是否正确";
 		}
@@ -74,7 +76,7 @@ public class SystemServiceImpl implements SystemService {
 
 	@Override
 	public User getOneOfUser(User user) {
-		return systemDao.getUserByUser_id(user.getUserId());
+		return systemDao.getUserByUuid(user.getUuid());
 	}
 
 	@Override
@@ -84,22 +86,14 @@ public class SystemServiceImpl implements SystemService {
 
 	@Override
 	public String modifyUser(User user) throws IllegalArgumentException, IllegalAccessException {
-		Class<? extends Object> cla = user.getClass();
-		Field[] fields = cla.getDeclaredFields();
-		User u = systemDao.getUserByUser_id(user.getUserId());
-		for (Field f : fields) {
-			f.setAccessible(true);
-			System.out.println(f.getName());
-			if (!"".equals(f.get(user)) && null != f.get(user) && !f.get(u).equals(f.get(user))) {
-				f.set(u, f.get(user));
-			}
-		}
-		return systemDao.updateUser(u).getUserId();
+		User u=systemDao.getUserByUuid(user.getUuid());
+		BeanUtil.copyProperties(user,u,CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+		return systemDao.updateUser(u).getUuid();
 	}
 
 	@Override
 	public String resetPassword(User user) {
-		User u = systemDao.getUserByUser_id(user.getUserId());
+		User u = systemDao.getUserByUuid(user.getUuid());
 		u.setPassword(md5.GetMD5Code("000000"));
 		return systemDao.updateUser(u).getUserId();
 	}

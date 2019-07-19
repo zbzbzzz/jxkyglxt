@@ -18,7 +18,7 @@ public interface SystemDao {
 	 *            用户ID
 	 * @return
 	 */
-	User getUserByUser_id(String user_id);
+	User getUserByUuid(String user_id);
 
 	/**
 	 * 通过角色ID获取角色对象
@@ -95,4 +95,5 @@ public interface SystemDao {
 	 */
 	List<User> getAllUser();
 
+    User getUserByUserId(String user_id);
 }

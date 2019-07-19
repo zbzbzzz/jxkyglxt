@@ -1,40 +1,134 @@
 package com.teacherms.all.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
 /**
  * StudentInfo entity. @author MyEclipse Persistence Tools
  */
 
+@Entity
+@Table(name = "student_info")
 public class StudentInfo implements java.io.Serializable {
 
 	// Fields
 
+	@Id
+	@GenericGenerator(name="idGenerator", strategy="uuid")
+	@GeneratedValue(generator="idGenerator")
+	@Column(name = "UUID")
+	private String uuid;
+
+	@Column(name = "STUDENT_ID",unique=true)
 	private String studentId;
+
+	//姓名
+	@Column(name = "STUDENT_NAME")
 	private String studentName;
+
+	//年制
+	@Column(name = "CALENDAR_YEAR")
 	private String calendarYear;
+
+	//入学年份
+	@Column(name = "ENROLMENT_YEAR")
 	private Integer enrolmentYear;
+
+	//证件类型
+	@Column(name = "CERTIFICATE_TYPE")
 	private String certificateType;
+
+	//身份证/护照号码
+	@Column(name = "CERTIFICATE_NO")
 	private String certificateNo;
+
+	//出生年份
+	@Column(name = "BIRTH_YEAR")
 	private String birthYear;
+
+	//性别
+	@Column(name = "SEX")
 	private String sex;
+
+	//民族
+	@Column(name = "NATION")
 	private String nation;
+
+	//政治面貌
+	@Column(name = "POLITICAL_STATUS")
 	private String politicalStatus;
+
+	//生源地
+	@Column(name = "STUDENT_SOURCE")
 	private String studentSource;
+
+	//学生类型
+	@Column(name = "STUDENT_TYPE")
 	private String studentType;
+
+	//招生类型
+	@Column(name = "ENROLMENT_TYPE")
 	private String enrolmentType;
+
+	//授课方式
+	@Column(name = "CLASS_TYPE")
 	private String classType;
+
+	//专业代码
+	@Column(name = "CLASS_NUMBER")
 	private String classNumber;
+
+	//专业名称
+	@Column(name = "CLASS_NAME")
 	private String className;
+
+	//自主专业名称
+	@Column(name = "IN_CLASS_NAME")
 	private String inClassName;
+
+	//所在学院
+	@Column(name = "DEPARTMENT_ID")
 	private Integer departmentId;
+
+	//是否师范类
+	@Column(name = "TEACHER_TRAINING")
 	private String teacherTraining;
+
+	//是否残疾
+	@Column(name = "DEFORMED")
 	private String deformed;
+
+	//异动类型
+	@Column(name = "CHANGES")
 	private String changes;
+
+	//入学学历
+	@Column(name = "ENTRANCE_RECORD")
 	private String entranceRecord;
+
+	//招生方式
+	@Column(name = "ENROLMENT_STYLE")
 	private String enrolmentStyle;
+
+	//休退学原因
+	@Column(name = "DROPPING_REASON")
 	private String droppingReason;
+
+	//户口类型
+	@Column(name = "REGISTERED_TYPE")
 	private String registeredType;
+
+	//是否授予学位
+	@Column(name = "DEGREE")
 	private String degree;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//修改时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors
@@ -311,18 +405,46 @@ public class StudentInfo implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "StudentInfo [studentId=" + studentId + ", studentName=" + studentName + ", calendarYear=" + calendarYear
-				+ ", enrolmentYear=" + enrolmentYear + ", certificateType=" + certificateType + ", certificateNo="
-				+ certificateNo + ", birthYear=" + birthYear + ", sex=" + sex + ", nation=" + nation
-				+ ", politicalStatus=" + politicalStatus + ", studentSource=" + studentSource + ", studentType="
-				+ studentType + ", enrolmentType=" + enrolmentType + ", classType=" + classType + ", classNumber="
-				+ classNumber + ", className=" + className + ", inClassName=" + inClassName + ", departmentId="
-				+ departmentId + ", teacherTraining=" + teacherTraining + ", deformed=" + deformed + ", changes="
-				+ changes + ", entranceRecord=" + entranceRecord + ", enrolmentStyle=" + enrolmentStyle
-				+ ", droppingReason=" + droppingReason + ", registeredType=" + registeredType + ", degree=" + degree
-				+ ", dataStatus=" + dataStatus + ", createTime=" + createTime + "]";
+	public String getUuid() {
+		return uuid;
 	}
 
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentInfo{" +
+				"uuid='" + uuid + '\'' +
+				", studentId='" + studentId + '\'' +
+				", studentName='" + studentName + '\'' +
+				", calendarYear='" + calendarYear + '\'' +
+				", enrolmentYear=" + enrolmentYear +
+				", certificateType='" + certificateType + '\'' +
+				", certificateNo='" + certificateNo + '\'' +
+				", birthYear='" + birthYear + '\'' +
+				", sex='" + sex + '\'' +
+				", nation='" + nation + '\'' +
+				", politicalStatus='" + politicalStatus + '\'' +
+				", studentSource='" + studentSource + '\'' +
+				", studentType='" + studentType + '\'' +
+				", enrolmentType='" + enrolmentType + '\'' +
+				", classType='" + classType + '\'' +
+				", classNumber='" + classNumber + '\'' +
+				", className='" + className + '\'' +
+				", inClassName='" + inClassName + '\'' +
+				", departmentId=" + departmentId +
+				", teacherTraining='" + teacherTraining + '\'' +
+				", deformed='" + deformed + '\'' +
+				", changes='" + changes + '\'' +
+				", entranceRecord='" + entranceRecord + '\'' +
+				", enrolmentStyle='" + enrolmentStyle + '\'' +
+				", droppingReason='" + droppingReason + '\'' +
+				", registeredType='" + registeredType + '\'' +
+				", degree='" + degree + '\'' +
+				", dataStatus='" + dataStatus + '\'' +
+				", createTime='" + createTime + '\'' +
+				'}';
+	}
 }

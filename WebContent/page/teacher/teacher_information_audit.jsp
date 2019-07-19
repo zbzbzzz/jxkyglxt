@@ -9,6 +9,13 @@
 <body>
 	<!--管理员审核信息时右侧内容-->
 	<section class="content" id="content">
+		<%@ include file ="/modal/addInfo/award_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/info_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/paper_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/works_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/project_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/patent_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/add_info_modal.jsp" %>
 	<div class="row">
 		<div class="col-md-12">
 			<!--breadcrumbs start -->
@@ -48,7 +55,7 @@
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选
 									</button>
 									<button style="margin-left:6px;" class="btn btn-default viewDisAudit btn-sm"> 
-										<i class="fa fa-search" aria-hidden="true"></i>查看未审核 
+										<i class="fa fa-search" aria-hidden="true"></i>查看未提交信息
 									</button>
 									<!-- 部分搜索 -->
 									<div style="float: right;">

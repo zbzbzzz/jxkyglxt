@@ -1,17 +1,34 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * StudentClass entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "student_class")
 public class StudentClass implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "CLASS_ID")
 	private String classId;
+
+	//班级名称
+	@Column(name = "CLASS_NAME")
 	private String className;
+
+	//班主任
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//修改时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors

@@ -28,6 +28,25 @@ $(function() {
 		})
 	});
 
+    //添加事件
+	var addInfo = function() {
+		//data.tableName中获取当前的表名称，进行判断对具体哪一个模态框进行操作
+			//modal_id_1，除去Teacher前部分，方便后部分操作
+			var modal_id_1 = data.tableName.replace("Student", "");
+			//modal_id，最终获取到的模态框id
+			var modal_id = "student_" + modal_id_1.substring(0, 1).toLowerCase() + modal_id_1.substring(1) + "_modal";
+			$("#" + modal_id).find('.sure_add').show();
+			$("#" + modal_id).find('.sure_modi').hide();
+			$("#" + modal_id + " .modal-body").find("input,select").removeAttr("disabled");
+			$("#" + modal_id + " .review-info").hide();
+			$("#" + modal_id).find('.addInfo').hide();
+			//显示出模态框
+			$("#" + modal_id).modal({
+				keyboard : true
+			})
+
+	}
+
 	//信息选择导出按钮事件绑定
 	var export_info = function() {
 		//显示确认导出按钮
@@ -207,6 +226,8 @@ $(function() {
 			var modal_id_1 = data.tableName.replace("Student", "");
 			//modal_id，最终获取到的模态框id
 			var modal_id = "student_" + modal_id_1.substring(0, 1).toLowerCase() + modal_id_1.substring(1) + "_modal";
+			$("#" + modal_id).find('.sure_add').hide();
+			$("#" + modal_id).find('.sure_modi').hide();
 			$("#" + modal_id + " .modal-body").find("input,select").each(function() {
 				var na = $(this).attr("name").split(".")[1];
 				if (na == "userId") {
@@ -216,6 +237,7 @@ $(function() {
 					if (xhr.studentInfo)
 						$(this).val(xhr.studentInfo.studentName);
 				} else $(this).val(xhr.object[na]);
+				$(this).attr("disabled","disabled")
 			})
 			/*$.each(xhr.attachmentName, function(i, v) {
 				$("#" + modal_id + " .addInfo").before(ImgManiFunc.setImgDiv(v, xhr.user.userId));
@@ -324,17 +346,19 @@ $(function() {
 	});
 
 	//学生添加
-	$('.sure_add').unbind("click").click(function() {
+	$('.sure_add').unbind();
+	$('.sure_add').click(function() {
+
 		var review_data = $("#" + modal_id + " form").serialize() + "&tableName=" + data.tableName;
 		$.post("/jxkyglxt/Student/student_setStudentAllInfo", review_data, function(sxh_data) {
-			if (sxh_data.result == "success") {
-				toastr.success('添加成功!')
-				$("#" + modal_id).modal("hide");
-			} else {
-				toastr.error('添加失败!');
-			}
+
+			ajaxResultVerification(sxh_data.result);
+			doQuery();
+			$("#" + modal_id).modal("hide");
+
 		}, "json")
 	});
+
 	//模糊查询
 	$('.fuzzy_query').click(function() {
 		data.fuzzy_query = $(this).parent().prev().val();
@@ -402,7 +426,10 @@ $(function() {
 
 				$('#' + a_href).find('table tbody').html(getStr(xhr_data));
 
+
+
 				//每次做查询之后，按钮需要重新绑定事件
+
 				$('.relieveButton').click(relieveInfo);
 				$('.modiButton').click(modiUserInfo);
 				$('.viewButton').click(viewInfo);
@@ -612,6 +639,7 @@ $(function() {
 		}
 	})
 
+	$(".btn-addon").click(addInfo);
 	//方法声明----end
 	//加载后默认点击学生信息管理
 	$('a[href="#info"]').click();

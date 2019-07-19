@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletResponse;
 
+import cn.hutool.core.util.StrUtil;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -119,6 +120,11 @@ public class SystemAction extends ActionSupport {
 	// 用户修改自身帐号信息
 	public void modifyUserInfo() {
 		try {
+			if(StrUtil.hasBlank(user.getUserName(),user.getUserId(),user.getPassword()))
+			{
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"dataError\"}");
+				return;
+			}
 			User u = systemService.modifyPassword(user,
 					(User) ActionContext.getContext().getSession().get("loginuser"));
 			ActionContext.getContext().getSession().remove("loginuser");
@@ -155,11 +161,22 @@ public class SystemAction extends ActionSupport {
 	// 系统管理修改用户
 	public void modifyUser() {
 		try {
-			String u = systemService.modifyUser(user);
+			if(StrUtil.hasBlank(user.getUserName(),user.getUserId(),user.getDepartmentId()))
+			{
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"dataError\"}");
+				return;
+			}
+			systemService.modifyUser(user);
 			ServletActionContext.getResponse().setCharacterEncoding("utf-8");
-			ServletActionContext.getResponse().getWriter().write(new Gson().toJson(u));
+			ServletActionContext.getResponse().getWriter().write("{\"result\":\"success\"}");
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"IDrepeat\"}");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -177,12 +194,22 @@ public class SystemAction extends ActionSupport {
 	// 系统管理添加管理
 	public void setAdminUser() {
 		try {
-			String u = systemService.setAdminUser(user);
+			if(StrUtil.hasBlank(user.getUserName(),user.getUserId(),user.getDepartmentId()))
+			{
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"dataError\"}");
+				return;
+			}
+			systemService.setAdminUser(user);
 			ServletActionContext.getResponse().setCharacterEncoding("utf-8");
-			ServletActionContext.getResponse().getWriter().write(new Gson().toJson(u));
+			ServletActionContext.getResponse().getWriter().write("{\"result\":\"success\"}");
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				ServletActionContext.getResponse().getWriter().write("{\"result\":\"IDrepeat\"}");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 

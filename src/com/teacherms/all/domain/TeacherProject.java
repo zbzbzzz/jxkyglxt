@@ -1,29 +1,82 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * TeacherProject entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "teacher_project")
 public class TeacherProject implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PROJECT_ID")
 	private String projectId;
+
+	//用户ID
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//项目名称
+	@Column(name = "PROJECT_NAME")
 	private String projectName;
+
+	//项目来源
+	@Column(name = "PROJECT_SOURCE")
 	private String projectSource;
+
+	//成员姓名
+	@Column(name = "PROJECT_MEMBER_NAMES")
 	private String projectUserNames;
+
+	//成员工号_排名
+	@Column(name = "PROJECT_MEMBER_IDS")
 	private String projectUserIds;
+
+	//立项编号或批准文号
+	@Column(name = "PROJECT_NO")
 	private String projectNo;
+
+	//项目类别
+	@Column(name = "PROJECT_TYPE")
 	private String projectType;
+
+	//立项日期
+	@Column(name = "APPROVAL_DATE")
 	private String approvalDate;
+
+	//结题验收或鉴定日期
+	@Column(name = "END_UP_DATE")
 	private String endUpDate;
+
+	//经费（万元）
+	@Column(name = "FUNDS")
 	private Integer funds;
+
+	//参与教师数
+	@Column(name = "MEMBER_NUM")
 	private Integer memberNum;
+
+	//级别
+	@Column(name = "LEVEL")
 	private String level;
+
+	//是否重点
+	@Column(name = "IS_IMPORTANT")
 	private String isImportant;
+
+	//附件地址
+	@Column(name = "ATTACHMENT_PATH")
 	private String attachmentPath;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//创建时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors

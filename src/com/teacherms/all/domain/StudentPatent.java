@@ -1,22 +1,54 @@
 package com.teacherms.all.domain;
 
+import javax.persistence.*;
+
 /**
  * StudentPatent entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "student_patent")
 public class StudentPatent implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PATENT_ID")
 	private String patentId;
+
+	//名称
+	@Column(name = "PATENT_NAME")
 	private String patentName;
+
+	//学号
+	@Column(name = "STUDENT_ID")
 	private String studentId;
+
+	//学生名字
+	@Column(name = "STUDENT_NAME")
 	private String studentName;
+
+	//类别
+	@Column(name = "PATENT_CLASS")
 	private String patentClass;
+
+	//授权号
+	@Column(name = "AUTHORIZATION_NO")
 	private String authorizationNo;
+
+	//获批时间
+	@Column(name = "TIME")
 	private String time;
+
+	//是否第一发明人
+	@Column(name = "FIRST_PATENT")
 	private String firstPatent;
+
+    //数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//修改时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	// Constructors

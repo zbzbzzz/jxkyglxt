@@ -18,6 +18,7 @@ var pageDataInformation = {
 	HavePrePage : '',
 	HaveNextPage : '',
 }
+
 //记录分页信息方法
 function setPageInfo(xhr_data) {
 	pageDataInformation.HaveNextPage = xhr_data.HaveNextPage;
@@ -140,40 +141,48 @@ $(function() {
 		case "人员调动": //只开放系统管理员操作
 			$('.right-side').load('page/administrator/PersonnelRedeploy.jsp #content', function() {
 				$.getScript("js/administrator/PersonnelRedeploy.js");
-			});			break;
+			});
+			break;
 		case "管理员帐号": //只开放系统管理员操作
 			$('.right-side').load('page/administrator/adminAccountManagement.jsp #content', function() {
 				$.getScript("js/administrator/adminAccountManagement.js");
-			});			break;
+			});
+			break;
 		case "教师信息审核": //管理员
 			$('.right-side').load('page/teacher/teacher_information_audit.jsp #content', selectSeacher(), function() {
 				data.dataState = "20";
 				$.getScript("js/teacher/teacher_information_audit.js");
-			});			break;
+			});
+			break;
 		case "教师信息管理": //管理员
 			$('.right-side').load('page/teacher/teacher_Information_management.jsp #content', selectSeacher(), function() {
 				data.dataState = "40";
 				$.getScript("js/teacher/teacher_Information_management.js");
-			});			break;
+			});
+			break;
 		case "学生信息审核": //管理员-学生信息审核
 			$('.right-side').load('page/student/student_information_audit.jsp #content', function() {
 				data.dataState = "20";
 				$.getScript("js/student/student_information_audit.js");
-			});			break;
+			});
+			break;
 		case "学生信息管理": //管理员-学生管理
 			$('.right-side').load('page/student/student_information_management.jsp #content', function() {
 				data.dataState = "40";
 				$.getScript("js/student/student_information_management.js");
-			});			break;
+			});
+			break;
 		case "学生信息查看": //教师用户登录时使用
 			$('.right-side').load('page/student/user_information_management.jsp #content', function() {
 				data.dataState = "%";
 				$.getScript("js/student/user_Information_management.js");
-			})			break;
+			})
+			break;
 		case "教师信息查看": //教师用户登录时使用
 			$('.right-side').load('page/teacher/user_Information_management.jsp #content', selectSeacher(), function() {
 				$.getScript("js/teacher/user_Information_management.js");
-			})			break;
+			})
+			break;
 		default:
 			break;
 		}
@@ -292,6 +301,7 @@ function user_setting() {
 	var str = '<form id="user_setting" action="">' +
 		'<table style="width:100%;">' +
 		'<tbody>' +
+		'<input type="hidden"class="form-control" name="user.uuid"/>' +
 		'<tr>' +
 		'<td>工号</td>' +
 		'<td><input type="text"class="form-control" name="user.userId"/></td>' +

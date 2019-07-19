@@ -9,6 +9,12 @@
 <body>
 	<!--管理员查看信息时右侧内容-->
 	<section class="content" id="content">
+		<%@ include file ="/modal/student/add_award_modal.jsp" %>
+		<%@ include file ="/modal/student/add_class_modal.jsp" %>
+		<%@ include file ="/modal/student/add_info_modal.jsp" %>
+		<%@ include file ="/modal/student/add_paper_modal.jsp" %>
+		<%@ include file ="/modal/student/add_patent_modal.jsp" %>
+		<%@ include file ="/modal/student/add_project_modal.jsp" %>
 	<div class="row">
 		<div class="col-md-12">
 			<!--breadcrumbs start -->
@@ -41,8 +47,11 @@
 							<!--表投上按钮组-->
 							<div class="box-tools m-b-15">
 								<div style="width: 100%;" class="input-group">
+									<button style="margin-left:6px;" class="btn btn-default viewDisSubmit btn-sm">
+										<i class="fa fa-search" aria-hidden="true"></i>查看未提交信息
+									</button>
 									<!--按条件筛选-->
-									<button style="" class="btn btn-default btn-sm" type="button"
+									<button style="margin-left:6px;"  class="btn btn-default btn-sm" type="button"
 										data-toggle="collapse" data-target="#collapse_exam_user"
 										aria-expanded="false" aria-controls="collapseExample">
 										<i class="fa fa-search" aria-hidden="true"></i> 条件筛选

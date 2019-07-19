@@ -458,10 +458,11 @@ $(function() {
 			} else if (dataStatus == "20" || dataStatus == "30") {
 				parent_div.find('.commmit-btn').html("信息审核中...").attr("disabled", "true").show();
 			} else if (dataStatus == "40") {
+				parent_div.find('.commmit-btn').html("已固化  (修改信息请联系管理员)").attr("disabled", "true").show();
 				$(this).attr("disabled", "disabled")
 			}
 			//设置用户名
-			$('input[name="username"]').val($('.userName_info').text());
+			$('input[name="userName"]').val($('.userName_info').text());
 			return; //结束执行
 		case 'award':
 			for (i = 0; i < xhr.length; i++) {

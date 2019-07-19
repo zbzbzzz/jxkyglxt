@@ -15,11 +15,7 @@ $(function() {
 				tableId : id,
 				tableName : data.tableName
 			}, function(xhr) {
-				//modal_id_1，除去Teacher前部分，方便后部分操作
-				var modal_id_1 = data.tableName.replace("Teacher", "");
-				//modal_id，最终获取到的模态框id
-				var modal_id = modal_id_1.substring(0, 1).toLowerCase() + modal_id_1.substring(1) + "_modal";
-				$('#' + modal_id + ' form').find("input,select").each(function() {
+				$("#info_modal .modal-body").find("input,select").each(function() {
 					var na = $(this).attr('name').split(".")[1];
 					if (na == "userId") {
 						$(this).val(xhr.user.userId);
@@ -27,34 +23,32 @@ $(function() {
 						$(this).val(xhr.user.userName);
 					}
 					else $(this).val(xhr.object[na]);
-				})
-				$.each(xhr.attachmentName, function(i, v) {
-					$("#" + modal_id + " .addInfo").before(ImgManiFunc.setImgDiv(v, xhr.user.userId));
+					if($(this).attr("name")!="teacherInfo.userId"&&$(this).attr("name")!="userName")
+						$(this).removeAttr("disabled");
+					else
+						$(this).attr("disabled","disabled");
 				})
 				//等全部信息加载完毕，再将模态框显示出来，避免模态框出现但是对应的值还未加载情况
-				//如果为用户信息，则只显示基础部分（当前为用户审核页面）
-				if (a_href == "info") {
-					$("#" + modal_id).find('.other').show();
-					$("#" + modal_id).find('.basic').hide();
-				}
-				//关闭图片添加
-				$("#" + modal_id).find('.addInfo').hide();
+				//如果为用户信息，则只显示基础部分（当前为用户管理页面）
+				$('#info_modal .basic').show();
+				$('#info_modal .other').show();
+				$('.sure_mod').show();
 				//显示出模态框
-				$("#" + modal_id).modal({
+				//关闭图片添加
+				$('#info_modal').modal({
 					keyboard : true
 				});
-				$("#" + modal_id).find('.sure_mod').unbind().click(function() {
-					var review_data = $("#" + modal_id + " form").serialize() + "&tableName=" + data.tableName;
-					$.post("/jxkyglxt/Admin/admin_modifiedInfomation", review_data, function(sxh_data) {
-						if (sxh_data.result == "success") {
-							toastr.success("修改成功!");
-							$("#" + modal_id).modal('hide');
+				$('#info_modal').find('.sure_mod').unbind().click(function() {
+					var review_data = $("#info_modal form").serialize() + "&tableName=" + data.tableName;
+					$.post("/jxkyglxt/Teacher/teacher_userSetTableInfo", review_data, function(sxh_data) {
+						$('#info_modal').modal('hide');
 							doQuery();
-						}
+						ajaxResultVerification(sxh_data.result);
 					}, "json")
 				}).show();
 			}, "json");
 	}
+
 	//固化信息
 	var solidInfo = function() {
 		var infoid = $(this).siblings('input').val();
@@ -74,8 +68,9 @@ $(function() {
 	
 	//显示未审核信息
 	var showDisAudit = function(){
+		data.dataState="10";
 		var dataLast = info_data.getQueryInfo();
-		dataLast.dataState = '10';
+		dataLast.page = 1;
 		$.ajax({
 			url : "/jxkyglxt/Admin/admin_getSpecifiedInformationByPaging",
 			type : "post",
@@ -85,6 +80,7 @@ $(function() {
 			dataType : "json",
 			success : function(xhr_data) {
 				//记录分页信息
+				console.log(xhr_data);
 				setPageInfo(xhr_data);
 				
 				$('#' + a_href).find('table tbody').html(()=>{
@@ -124,6 +120,7 @@ $(function() {
 	//页面中只需要绑定一次事件的元素绑定事件区----start
 	$('.nav-tabs li a').click(function() {
 		//如果已经是点击状态，则点击不作为
+		data.dataState="20";
 		if ($(this).parent('li').attr('class') == 'active') return;
 
 		//重置页码
@@ -288,6 +285,10 @@ $(function() {
 		var str = "";
 		switch (a_href) {
 		case 'info':
+			var action='<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>'
+				+ '<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>';
+			if(data.dataState=="10")
+				action="无操作";
 			for (i = 0; i < xhr.length; i++) {
 				str += "<tr>";
 				str += "<td>" + ((pageDataInformation.pageIndex-1)*10+i + 1) + "</td>";
@@ -297,10 +298,7 @@ $(function() {
 				str += "<td>" + xhr[i][0].employeeType + "</td>";
 				str += "<td>" + xhr[i][0].teachingType + "</td>";
 				str += "<td>" + xhr[i][0].teachingStatus + "</td>";
-				str += '<td><input type="hidden" value="' + xhr[i][0].teacherInfoId + '" >'
-					+ '<button class="btn btn-default btn-xs modiButton" title="修改"><i class="fa fa-pencil-square-o fa-lg"></i></button>'
-					+ '<button class="btn btn-default btn-xs solidButton" title="固化"><i class="fa fa-chain fa-lg" ></i></button>'
-					+ '</td></tr>';
+				str += '<td><input type="hidden" value="' + xhr[i][0].teacherInfoId + '" >'+action+'</td></tr>';
 				str += "</tr>";
 			}
 			break;

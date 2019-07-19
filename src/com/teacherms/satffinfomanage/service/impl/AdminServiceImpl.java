@@ -51,8 +51,10 @@ public class AdminServiceImpl implements AdminService {
 		int pageSize = 10;
 		// 页数
 		int pageIndex = Integer.parseInt(page);
-		// 查询长度
-		int toindex = pageSize;
+		// 总记录数
+		int totalSize=0;
+		// 查询坐标
+		int toindex = (pageIndex-1)*pageSize;
 		// 创建list
 		List<Object> list = new ArrayList<Object>();
 		// 设置查询时间区间，如果time_interval为空则不执行
@@ -115,17 +117,14 @@ public class AdminServiceImpl implements AdminService {
 			// 三目运算，如果已经含有了指定查询内容，则不查询模糊查询内容，反则如果模糊查询有值，进行模糊查询
 			// 在之前循环过程中，首位添加or，所以第一位or为多余，应当去掉
 			list = adminDao.getAllStatusInfo(tableName, time_interval, dataState, collegeName,
-					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""));
+					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""),toindex,pageSize);
+			totalSize = adminDao.getAllStatusInfoTotalSize(tableName, time_interval, dataState, collegeName,
+					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""),toindex,pageSize);
 		}
-		// 总记录数
-		int totalSize = list.size();
-		// 当所要显示的最大值大于记录数最大值时，每页记录设置为不超过记录数值
-		if (pageIndex * pageSize > totalSize) {
-			toindex = totalSize - (pageIndex - 1) * pageSize;
-		}
+
 		// 设置VO内参数页码，每页记录数，总记录数
 		PageVO<Object> pageVO = new PageVO<Object>(pageIndex, pageSize, totalSize);
-		pageVO.setObjDatas(list.subList((pageIndex - 1) * pageSize, (pageIndex - 1) * pageSize + toindex));
+		pageVO.setObjDatas(list);
 		return pageVO;
 	}
 
@@ -241,17 +240,11 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public String addTeacherInfo(TeacherInfo teacherInfo, String departmentId) {
-		teacherInfo.setTeacherInfoId(uuid.getUuid());
 		teacherInfo.setDataStatus("10");
 		teacherInfo.setCreateTime(TimeUtil.getStringDay());
 		adminDao.addInfo(teacherInfo);
 
-		User user = new User();
-		user.setUserId(teacherInfo.getUserId());// 用户id
-		user.setPassword(md5.GetMD5Code("000000"));// 设置初试密码000000
-		user.setRoleId("10");// 用户角色
-		System.out.println(departmentId);
-		user.setDepartmentId(departmentId);
+		User user = new User(teacherInfo.getUserId(),"未定义",md5.GetMD5Code("000000"),departmentId,"10");
 		String result = adminDao.addInfo(user);
 		return result.length() > 0 ? "success" : "error";
 	}

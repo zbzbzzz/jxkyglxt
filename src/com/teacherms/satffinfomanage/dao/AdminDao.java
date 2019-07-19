@@ -14,8 +14,17 @@ public interface AdminDao {
 	 * @return 对象list集合
 	 */
 	List<Object> getAllStatusInfo(String table, String time, String status, String collegeName, String multi_condition,
-			String fuzzy);
-
+			String fuzzy,int i,int x);
+	/**
+	 * 功能描述:获取指定状态的全部教职工信息总数 <br>
+	 * 〈〉
+	 * @Param:
+	 * @Return: int
+	 * @Author: zbzbzzz
+	 * @Date: 2019/7/17 22:00
+	 */
+	int getAllStatusInfoTotalSize(String table, String time, String status, String collegeName, String multi_condition,
+										   String fuzzy,int i,int x);
 	/**
 	 * ---通过ID获取用户信息
 	 * 
@@ -124,5 +133,6 @@ public interface AdminDao {
 	 * @return
 	 */
 	boolean deleteInfo(Introduction introduction);
+
 
 }

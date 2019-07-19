@@ -4,8 +4,9 @@
 	"http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-
+	<!-- 动态调用 -->
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<!-- 开发模式 -->
 	<constant name="struts.devMode" value="true" />
 	<!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
 	<constant name="struts.configuration.xml.reload" value="true" />

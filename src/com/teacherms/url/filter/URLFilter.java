@@ -25,7 +25,7 @@ public class URLFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpSession session = httpRequest.getSession();
 		if (session.getAttribute("loginuser") == null) {
-			request.getRequestDispatcher("/System/system_toLoginView").forward(request, response);
+			request.getRequestDispatcher("/").forward(request, response);
 			return;
 		} else {
 			filterch.doFilter(request, response);

@@ -7,13 +7,14 @@ $(function() {
 			var a = $(e.target);
 			var id = a.attr('introduction-id');
 			$.post('/jxkyglxt/System/system_getOneOfUser', {
-				"user.userId" : id
+				"user.uuid" : id
 			}, function(xhr) {
 				$.post('/jxkyglxt/System/system_getAllDepartment', '', function(xhr2) {
 					var TABLE_STYLE = '<form id="user_update"><table class="table">'
 						+ '<caption>信息</caption><tbody>'
+						+ '<input type="hidden"class="form-control" name="user.uuid" value="' + xhr.uuid + '"/>'
 						+ '<tr>'
-						+ '<th>ID</th>'
+						+ '<th>工号</th>'
 						+ '<th>'
 						+ '<input name="user.userId" class="form-control" value="' + xhr.userId + '" type="text"></th>'
 						+ '</tr>'
@@ -52,15 +53,10 @@ $(function() {
 					text : '修改',
 					action : function() {
 						$.post('/jxkyglxt/System/system_modifyUser', $('#user_update').serialize(), function(xhr_data) {
-							if (xhr_data.length > 0) {
-								toastr.success("修改成功");
-								//重新刷新该页面
+							ajaxResultVerification(xhr_data.result);
 								$('.right-side').load('page/administrator/adminAccountManagement.jsp #content', function() {
 									$.getScript("js/administrator/adminAccountManagement.js");
 								});
-							} else {
-								toastr.error("修改失败,ID已使用");
-							}
 						}, 'json');
 					}
 				},
@@ -127,8 +123,9 @@ $(function() {
 		$.post('/jxkyglxt/System/system_getAllDepartment', '', function(xhr2) {
 			var TABLE_STYLE = '<form id="user_add"><table class="table">'
 				+ '<caption>信息添加</caption><tbody>'
+				+ '<input type="hidden"class="form-control" name="user.uuid"/>'
 				+ '<tr>'
-				+ '<th>ID</th>'
+				+ '<th>工号</th>'
 				+ '<th>'
 				+ '<input name="user.userId" class="form-control" value="" type="text"></th>'
 				+ '</tr>'
@@ -158,15 +155,11 @@ $(function() {
 						text : '添加',
 						action : function() {
 							$.post('/jxkyglxt/System/system_setAdminUser', this.$content.find('#user_add').serialize(), function(xhr_data) {
-								if (xhr_data.length > 0) {
-									toastr.success("添加成功");
-									//重新刷新该页面
+								ajaxResultVerification(xhr_data.result);
 									$('.right-side').load('page/administrator/adminAccountManagement.jsp #content', function() {
 										$.getScript("js/administrator/adminAccountManagement.js");
 									});
-								} else {
-									toastr.error("添加失败");
-								}
+
 							}, 'json');
 						}
 					},

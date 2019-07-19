@@ -35,9 +35,9 @@ public class StudentServiceImpl implements StudentService {
 		Class<? extends Object> infoClass = InfoObject.getClass();
 		
 		// 获取ID并赋值
-		Field InfoId = infoClass.getDeclaredFields()[0];
+		/*Field InfoId = infoClass.getDeclaredFields()[0];
 		InfoId.setAccessible(true);
-		InfoId.set(InfoObject, uuid.getUuid());
+		InfoId.set(InfoObject, uuid.getUuid());*/
 
 		// 获取日期并赋值
 		Field time = infoClass.getDeclaredField("createTime");
@@ -47,7 +47,7 @@ public class StudentServiceImpl implements StudentService {
 		// 设置数据状态，初始状态为10
 		Field dataStatus = infoClass.getDeclaredField("dataStatus");
 		dataStatus.setAccessible(true);
-		dataStatus.set(InfoObject, "20");
+		dataStatus.set(InfoObject, "10");
 
 		return studentDao.setInfo(InfoObject) ? "success" : "error";
 	}
@@ -224,8 +224,10 @@ public class StudentServiceImpl implements StudentService {
 		int pageSize = 10;
 		// 页数
 		int pageIndex = Integer.parseInt(page);
-		// 查询长度
-		int toindex = pageSize;
+		// 查询坐标
+		int toindex = (pageIndex-1)*pageSize;
+		// 总记录数
+		int totalSize=0;
 		// 创建list
 		List<Object> list = new ArrayList<Object>();
 		// 设置查询时间区间，如果time_interval为空则不执行
@@ -291,17 +293,14 @@ public class StudentServiceImpl implements StudentService {
 			// 三目运算，如果已经含有了指定查询内容，则不查询模糊查询内容，反则如果模糊查询有值，进行模糊查询
 			// 在之前循环过程中，首位添加or，所以第一位or为多余，应当去掉
 			list = studentDao.getAllStatusInfo(tableName, time_interval, dataState, collegeName,
-					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""));
-		}
-		// 总记录数
-		int totalSize = list.size();
-		// 当所要显示的最大值大于记录数最大值时，每页记录设置为不超过记录数值
-		if (pageIndex * pageSize > totalSize) {
-			toindex = totalSize - (pageIndex - 1) * pageSize;
+					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""),toindex,pageSize);
+			// 总记录数
+			totalSize = studentDao.getAllStatusInfoTotalSize(tableName, time_interval, dataState, collegeName,
+					Multi_condition.toString(), haveMulti_condition ? "" : fuzzy.toString().replaceFirst(" or", ""),toindex,pageSize);
 		}
 		// 设置VO内参数页码，每页记录数，总记录数
 		PageVO<Object> pageVO = new PageVO<Object>(pageIndex, pageSize, totalSize);
-		pageVO.setObjDatas(list.subList((pageIndex - 1) * pageSize, (pageIndex - 1) * pageSize + toindex));
+		pageVO.setObjDatas(list);
 		return pageVO;
 	}
 

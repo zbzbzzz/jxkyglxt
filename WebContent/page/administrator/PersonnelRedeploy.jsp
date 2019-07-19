@@ -62,7 +62,7 @@
 								<s:iterator id="list" value="#DL.list" status="st">
 									<a style="height: 42px;" href="javascript:void(0);"
 										class="list-group-item col-md-2"
-										user-id="<s:property value="#list.userId" />"><s:property
+										uu-id="<s:property value="#list.uuid" />"><s:property
 											value="#list.userName" /></a>
 								</s:iterator>
 							</div>

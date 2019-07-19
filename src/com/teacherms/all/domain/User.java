@@ -1,17 +1,40 @@
 package com.teacherms.all.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
 /**
  * User entity. @author MyEclipse Persistence Tools
  */
-
+@Entity
+@Table(name = "user")
 public class User implements java.io.Serializable {
 
 	// Fields
+	@Id
+	@GenericGenerator(name="idGenerator", strategy="uuid")
+	@GeneratedValue(generator="idGenerator")
+	@Column(name = "UUID")
+	private String uuid;
 
+	@Column(name = "USER_ID",unique=true)
 	private String userId;
+
+	//用户姓名
+	@Column(name = "USER_NAME")
 	private String userName;
+
+	//密码
+	@Column(name = "PASSWORD")
 	private String password;
+
+	//院系（部门）编号
+	@Column(name = "DEPARTMENT_ID")
 	private String departmentId;
+
+	//角色ID
+	@Column(name = "ROLE_ID")
 	private String roleId;
 
 	// Constructors
@@ -76,10 +99,23 @@ public class User implements java.io.Serializable {
 		this.roleId = roleId;
 	}
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", departmentId="
-				+ departmentId + ", roleId=" + roleId + "]";
+	public String getUuid() {
+		return uuid;
 	}
 
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"uuid='" + uuid + '\'' +
+				", userId='" + userId + '\'' +
+				", userName='" + userName + '\'' +
+				", password='" + password + '\'' +
+				", departmentId='" + departmentId + '\'' +
+				", roleId='" + roleId + '\'' +
+				'}';
+	}
 }

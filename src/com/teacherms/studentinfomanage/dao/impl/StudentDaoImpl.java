@@ -1,5 +1,7 @@
 package com.teacherms.studentinfomanage.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -17,7 +19,7 @@ public class StudentDaoImpl implements StudentDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	
+
 
 	public Session getSession() {
 		return this.sessionFactory.getCurrentSession();
@@ -135,8 +137,49 @@ public class StudentDaoImpl implements StudentDao {
 	}
 
 	@Override
+	/**
+	 * 功能描述: <br>
+	 * 〈〉
+	 * @Param: [table, time, status, collegeName, multi_condition, fuzzy, toindex, pageSize]
+	 * @Return: java.util.List<java.lang.Object>
+	 * @Author: zbzbzzz
+	 * @Date: 2019/7/17 17:51
+	 */
 	public List<Object> getAllStatusInfo(String table, String time, String status, String collegeName,
-			String multi_condition, String fuzzy) {
+			String multi_condition, String fuzzy,int toindex, int pageSize) {
+		String hql = getHql(table, time, status, collegeName, multi_condition, fuzzy);
+		hql = hql + " order by t.createTime desc";
+
+		//解决N+1问题（在缓存中取数据）
+		List<Object> list=new ArrayList<Object>();
+		Query query=getSession().createQuery(hql);
+		query.setFirstResult(toindex);
+		query.setMaxResults(pageSize);
+		Iterator<Object> it= query.iterate();
+		while(it.hasNext()){
+			list.add(it.next());
+		}
+		return list;
+	}
+
+	@Override
+	/**
+	 * 功能描述: <br>
+	 * 〈〉
+	 * @Param: [table, time, status, collegeName, multi_condition, fuzzy, toindex, pageSize]
+	 * @Return: int
+	 * @Author: zbzbzzz
+	 * @Date: 2019/7/17 17:51
+	 */
+	public int getAllStatusInfoTotalSize(String table, String time, String status, String collegeName,
+										 String multi_condition, String fuzzy,int toindex, int pageSize) {
+		String hql = getHql(table, time, status, collegeName, multi_condition, fuzzy);
+		hql ="select count(*) "+hql.substring(hql.indexOf("from"),hql.length());
+		Query query=getSession().createQuery(hql);
+		return ((Number)query.uniqueResult()).intValue();
+	}
+	
+	public String getHql(String table, String time, String status, String collegeName, String multi_condition, String fuzzy) {
 		String hql = "";
 		if ("StudentInfo".equals(table)) {
 			hql = "select new com.teacherms.studentinfomanage.vo.StudentInfoAndOtherInfo(u) from " + table
@@ -146,14 +189,12 @@ public class StudentDaoImpl implements StudentDao {
 			hql = "select new com.teacherms.studentinfomanage.vo.StudentInfoAndOtherInfo(t,u) from " + table
 					+ " t,StudentInfo u,Department d where u.studentId=t.studentId and u.departmentId=d.departmentId and d.departmentName like '"
 					+ collegeName + "' and t.dataStatus like '" + status + "'" + time + multi_condition + fuzzy;
-		}else if("StudentClass".equals(table)){
+		} else if ("StudentClass".equals(table)) {
 			hql = "select new com.teacherms.studentinfomanage.vo.StudentInfoAndOtherInfo(t,u) from " + table
 					+ " t,StudentInfo u,Department d where u.studentId=t.userId and u.departmentId=d.departmentId and d.departmentName like '"
 					+ collegeName + "' and t.dataStatus like '" + status + "'" + time + multi_condition + fuzzy;
 		}
-		hql = hql + " order by t.createTime desc";
-//		System.out.println(hql);
-		return getSession().createQuery(hql).list();
+		return hql;
 	}
 
 }

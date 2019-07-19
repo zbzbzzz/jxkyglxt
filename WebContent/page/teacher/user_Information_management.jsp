@@ -4,6 +4,11 @@
 <body>
 	<!--管理员审核信息时右侧内容-->
 	<section class="content" id="content">
+		<%@ include file ="/modal/addInfo/award_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/paper_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/works_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/project_modal.jsp" %>
+		<%@ include file ="/modal/addInfo/patent_modal.jsp" %>
 	<div class="row">
 		<div class="col-md-12">
 			<!--breadcrumbs start -->
@@ -68,10 +73,13 @@
 												<td>工号：</td>
 												<td><input name="teacherInfo.teacherInfoId"
 													type="hidden"> <input name="teacherInfo.userId"
-													class="form-control table_infomation" type="text"></td>
+													class="form-control table_infomation" type="text" disabled="disabled">
+												</td>
 												<td>姓名:</td>
-												<td><input name="username"
-													class="form-control table_infomation" type="text"></td>
+												<td><input name="userName"
+														   type="hidden">
+													<input name="userName"
+													class="form-control table_infomation" type="text" disabled="disabled"></td>
 											</tr>
 											<tr>
 												<td>证件类型：</td>

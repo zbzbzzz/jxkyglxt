@@ -48,7 +48,7 @@
 
 					<s:iterator value="#request.adminList" status="st">
 						<a class="list-group-item"
-							introduction-id="<s:property value="userId"/>"><span
+							introduction-id="<s:property value="uuid"/>"><span
 							class="badge"><s:property value="departmentId" /></span> <s:property
 								value="userName" /> </a>
 					</s:iterator>

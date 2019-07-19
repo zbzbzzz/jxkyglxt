@@ -1,30 +1,85 @@
 package com.teacherms.all.domain;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * TeacherAward entity. @author MyEclipse Persistence Tools
  */
+
+@Entity
+@Table(name = "teacher_award")
 public class TeacherAward implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GenericGenerator(name="idGenerator", strategy="assigned")
+	@GeneratedValue(generator="idGenerator")
+	@Column(name = "AWARD_ID")
 	private String awardId;
+
+	//用户ID
+	@Column(name = "USER_ID")
 	private String userId;
+
+	//获奖作品名称
+	@Column(name = "ACHIEVEMENT_NAME")
 	private String achievementName;
+
+	//奖励名称
+	@Column(name = "AWARD_NAME")
 	private String awardName;
+
+	//获奖者姓名
+	@Column(name = "AWARD_USER_NAMES")
 	private String awardUserNames;
+
+	//获奖者工号_排名
+	@Column(name = "AWARD_USER_IDS")
 	private String awardUserIds;
+
+	//奖励类型
+	@Column(name = "AWARD_TYPE")
 	private String awardType;
+
+	//获奖类别
+	@Column(name = "AWARD_CLASS")
 	private String awardClass;
+
+	//获奖等级
+	@Column(name = "AWARD_GRADE")
 	private String awardGrade;
+
+	//获奖级别
+	@Column(name = "AWARD_LEVEL")
 	private String awardLevel;
+
+	//获奖时间
+	@Column(name = "AWARD_DATE")
 	private String awardDate;
+
+	//获奖证书编号
+	@Column(name = "AWARD_CERTIFICATION_NO")
 	private String awardCertificationNo;
+
+	//授予单位
+	@Column(name = "GRANT_UNIT")
 	private String grantUnit;
+
+	//附件地址
+	@Column(name = "ATTACHMENT_PATH")
 	private String attachmentPath;
+
+	//数据状态
+	@Column(name = "DATA_STATUS")
 	private String dataStatus;
+
+	//创建时间
+	@Column(name = "CREATE_TIME")
 	private String createTime;
+
 
 	// Constructors
 

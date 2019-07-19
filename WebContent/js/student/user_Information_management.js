@@ -4,6 +4,52 @@ $(function() {
 	var infoType = null;
 	var modal_id = null;
 
+	//显示已提交或者已固化信息
+	var showMsg = function(){
+		var dataLast = info_data.getQueryInfo();
+		dataLast.page = 1;
+		$.ajax({
+			url : "/jxkyglxt/Student/student_getSpecifiedInformationByPaging",
+			type : "post",
+			async : false,
+			timeout : 3000,
+			data : dataLast,
+			dataType : "json",
+			success : function(xhr_data) {
+				//记录分页信息
+				setPageInfo(xhr_data);
+
+				$('#' + a_href).find('table tbody').html(()=>{
+					var str = '';
+					for (i = 0; i < xhr_data.ObjDatas.length; i++) {
+						str += `<tr>
+			<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
+			<td>${xhr_data.ObjDatas[i].object.studentId}</td>
+			<td>${xhr_data.ObjDatas[i].object.studentName}</td>
+			<td>${xhr_data.ObjDatas[i].object.sex}</td>
+			<td>${xhr_data.ObjDatas[i].object.enrolmentYear}</td>
+			<td>${xhr_data.ObjDatas[i].object.createTime}</td>
+<td><input type="hidden" value="${xhr_data.ObjDatas[i].object.studentId}"><button class="btn btn-default btn-xs viewButton" title="查看">
+<i class="fa fa-eye fa-lg"  aria-hidden="true"></i></button></td>`;
+					}
+					return str;
+				});
+				$('.viewButton').click(viewInfo);
+				//记录分页详情信息
+				$('#pageInfo').html('当前第' + xhr_data.pageIndex + '页 | 共' + xhr_data.totalPages + '页');
+				((xhr_data)=>{
+					if(xhr_data.HaveNextPage){$('#page-next').removeClass('disabled')}else{ $('#page-next').addClass('disabled')}
+					if(xhr_data.HavePrePage){$('#page-prev').removeClass('disabled')}else{ $('#page-prev').addClass('disabled')}
+					if(xhr_data.pageIndex == 1){$('#page-first').addClass('disabled')}else{$('#page-first').removeClass('disabled')}
+					if(xhr_data.pageIndex == xhr_data.totalPages || xhr_data.totalPages == 0){$('#page-last').addClass('disabled')}else{$('#page-last').removeClass('disabled')}
+				})(xhr_data);
+			},
+			error : function() {
+				toastr.error('服务器错误!');
+			}
+		});
+	}
+
 	//信息添加
 	var add_info = function() {
 		$("#" + modal_id).find('.sure_add').show();
@@ -197,6 +243,7 @@ $(function() {
 
 	$('.nav-tabs li a').click(function() {
 		//如果已经是点击状态，则点击不作为
+		data.dataState="10"
 		if ($(this).parent('li').attr('class') == 'active') return;
 		//重置页码
 		data.page = 1;
@@ -229,9 +276,9 @@ $(function() {
 	$('.sure_add').click(function() {
 		var review_data = $("#" + modal_id + " form").serialize() + "&tableName=" + data.tableName;
 		$.post("/jxkyglxt/Student/student_setStudentAllInfo", review_data, function(sxh_data) {
-			if (sxh_data.result == "success") {
-				toastr.success("添加成功！");
-			}
+			ajaxResultVerification(sxh_data.result);
+			doQuery();
+			$("#" + modal_id).modal("hide");
 		}, "json")
 	});
 	$('.card_num').keyup(getinfoByCardIdk);
@@ -314,6 +361,8 @@ $(function() {
 			data : data,
 			dataType : "json",
 			success : function(xhr_data) {
+				//记录分页
+				setPageInfo(xhr_data);
 				console.log('#' + a_href);
 				$('#' + a_href).find('table tbody').html(getStr(xhr_data));
 
@@ -321,6 +370,30 @@ $(function() {
 				$('.modiButton').click(modiInfo);
 				//提交审核点击事件
 				$('.commmit-btn').click(commit_info);
+				//记录分页详情信息
+				$('#pageInfo').html('当前第' + xhr_data.pageIndex + '页 | 共' + xhr_data.totalPages + '页');
+				((xhr_data) => {
+					if (xhr_data.HaveNextPage) {
+						$('#page-next').removeClass('disabled')
+					} else {
+						$('#page-next').addClass('disabled')
+					}
+					if (xhr_data.HavePrePage) {
+						$('#page-prev').removeClass('disabled')
+					} else {
+						$('#page-prev').addClass('disabled')
+					}
+					if (xhr_data.pageIndex == 1) {
+						$('#page-first').addClass('disabled')
+					} else {
+						$('#page-first').removeClass('disabled')
+					}
+					if (xhr_data.pageIndex == xhr_data.totalPages || xhr_data.totalPages == 0) {
+						$('#page-last').addClass('disabled')
+					} else {
+						$('#page-last').removeClass('disabled')
+					}
+				})(xhr_data);
 			},
 			error : function() {
 				toastr.error('服务器错误!');
@@ -337,12 +410,11 @@ $(function() {
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				dataStatus = xhr.ObjDatas[i].object.dataStatus;
 				str += `<tr>
-			<td>${(i + 1)}</td>
+			<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
 			<td>${xhr.ObjDatas[i].object.studentId}</td>
 			<td>${xhr.ObjDatas[i].object.studentName}</td>
 			<td>${xhr.ObjDatas[i].object.sex}</td>
 			<td>${xhr.ObjDatas[i].object.enrolmentYear}</td>
-			<td>${xhr.ObjDatas[i].object.departmentId}</td>
 			<td>${xhr.ObjDatas[i].object.createTime}</td>`;
 				//<td><input type="hidden" value="${xhr.ObjDatas[i].object.studentId}">`;
 				if (dataStatus == "10") {
@@ -358,7 +430,7 @@ $(function() {
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				dataStatus = xhr.ObjDatas[i].object.dataStatus;
 				str += `<tr>
-					<td>${(i + 1)}</td>
+					<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
 					<td>${xhr.ObjDatas[i].object.awardName}</td>
 					<td>${xhr.ObjDatas[i].object.studentId}</td>
 					<td>${xhr.ObjDatas[i].object.awardClass}</td>
@@ -398,7 +470,7 @@ $(function() {
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				dataStatus = xhr.ObjDatas[i].object.dataStatus;
 				str += `<tr>
-					<td>${(i + 1)}</td>
+					<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
 					<td>${xhr.ObjDatas[i].object.paperName}</td>
 					<td>${xhr.ObjDatas[i].object.studentId}</td>
 					<td>${xhr.ObjDatas[i].object.periodical}</td>
@@ -419,7 +491,7 @@ $(function() {
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				dataStatus = xhr.ObjDatas[i].object.dataStatus;
 				str += `<tr>
-					<td>${(i + 1)}</td>
+					<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
 					<td>${xhr.ObjDatas[i].object.patentName}</td>
 					<td>${xhr.ObjDatas[i].object.studentId}</td>
 					<td>${xhr.ObjDatas[i].object.patentClass}</td>
@@ -441,7 +513,7 @@ $(function() {
 			for (i = 0; i < xhr.ObjDatas.length; i++) {
 				dataStatus = xhr.ObjDatas[i].object.dataStatus;
 				str += `<tr>
-					<td>${(i + 1)}</td>
+					<td>${((pageDataInformation.pageIndex - 1) * 10 + i + 1)}</td>
 					<td>${xhr.ObjDatas[i].object.projectName}</td>
 					<td>${xhr.ObjDatas[i].object.studentId}</td>
 					<td>${xhr.ObjDatas[i].object.projectLeading}</td>
@@ -602,5 +674,13 @@ $(function() {
 			toastr.error('服务器错误');
 			break;
 		}
+	});
+	$(".viewSubmit").click(()=>{
+		data.dataState="20";
+		showMsg();
+	});
+	$(".viewSolid").click(()=>{
+		data.dataState="40";
+		showMsg();
 	});
 })
